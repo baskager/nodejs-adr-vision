@@ -33,5 +33,9 @@ Method: POST
 URI: ``localhost:1995/analyse``
 
 Parameters:
+- detectionType
+    - Expects a valid function name from the Google Vision API, for example:
+        - faceDetection
+        - landmarkDetection
 - url
     - Expects a valid URL string

@@ -16,7 +16,8 @@ app
 
 app.listen(port);
 console.log('server running on port http://localhost:' + port);
-
+// Analyse endpoint, you can send an image url and a detectionType to do a
+// Google Vision image analysis
 router.post('/analyse', async context => {
     let requestBody = context.request.body;
     if(requestBody) {
@@ -28,30 +29,36 @@ router.post('/analyse', async context => {
         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
 
         if(pattern.test(requestBody.url)) {
-            await visionClient
-              .labelDetection(requestBody.url)
-              .then(results => {
-                const labels = results[0].labelAnnotations;
 
-                console.log('Labels:');
-                labels.forEach(label => console.log(label.description));
-
-                context.body = labels;
-              })
-              .catch(err => {
-                console.error('ERROR:', err);
+            // Check if requested function exists in the Google Vision API
+            if (typeof visionClient[requestBody.detectionType] === "function") {
+                // Use the Google Vision client to analyse the image on the URL requested
+                await visionClient[requestBody.detectionType](requestBody.url)
+                .then(results => {
+                    context.body = results;
+                })
+                .catch(err => {
+                    context.res.statusCode = 400;
+                    context.body = "<h1>400 - Bad Request</h1>";
+                    context.body += "<p>Google vision API could not process the image</p>";
+                });
+            } else {
                 context.res.statusCode = 400;
-                context.body = "<h1>400 - Bad Request</h1>"
-                context.body += "<p>Google vision API could not process the image</p>"
-              });
+                context.body = "<h1>400 - Bad Request</h1>";
+                context.body += "<p>Google Vision API does not have the function: "
+                    + requestBody.detectionType;
+            }
+
+
+
         } else {
             context.res.statusCode = 400;
-            context.body = "<h1>400 - Bad Request</h1>"
-            context.body += "<p>Invalid data for parameter: url</p>"
+            context.body = "<h1>400 - Bad Request</h1>";
+            context.body += "<p>Invalid data for parameter: url</p>";
         }
     }
 });
-
+// Simple test endpoint to check if you got things working :)
 router.get('/test', async context => {
     console.log('reached test');
     // context.body = "<h1>test</h1>";
