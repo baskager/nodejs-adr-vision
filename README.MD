@@ -26,7 +26,7 @@ Method: GET
 URI: ``localhost:1995/test``
 
 ### Analyse
-Simple test endpoint, returns silly banana data
+Performs a Google Vision analysis on a given image.
 
 Method: POST
 
