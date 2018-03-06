@@ -1,12 +1,20 @@
 # AdamLink Depiction Recognition API
 A very simple API which compares portraits from the Adamlink project. By using facial recognition we can identify and label the people that are depicted.
 
-Dependencies:
+**Dependencies:**
 - NodeJS
+- NPM
 - Koa
 - Koa-router
 - Koa-body
 - Google Cloud Vision API
+
+# Installation
+Run ``npm install``
+
+Then run `` Node app ``
+
+If you wish to change the port you can do so in app.js
 
 # Available endpoints
 
