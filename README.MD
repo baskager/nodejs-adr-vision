@@ -10,6 +10,9 @@ A very simple API which compares portraits from the Adamlink project. By using f
 - Google Cloud Vision API
 
 # Installation
+Create credentials for Google Cloud:
+https://cloud.google.com/vision/docs/reference/libraries
+
 Run ``npm install``
 
 Then run `` Node app ``
